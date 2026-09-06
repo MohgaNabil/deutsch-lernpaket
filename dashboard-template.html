@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Deutsch B2 Dashboard</title>
+<title>Language Learning Dashboard</title>
 <style>
 :root { color-scheme: light; }
 * { box-sizing: border-box; }
@@ -87,14 +87,25 @@ details summary { cursor: pointer; color: #888; font-size: 12px; }
 <body>
 <div class="wrap">
 <header>
-<h1>Deutsch B2 Dashboard</h1>
-<div class="subtitle" id="subtitle">Tracking your German practice over time</div>
+<h1 id="mainTitle">Dashboard</h1>
+<div class="subtitle" id="subtitle">Tracking your language practice over time</div>
 </header>
 <div id="banner"></div>
 <main id="app"></main>
 </div>
 
 <script>
+// === LEARNER CONFIG (keep in sync with learning-config.json, or ask Claude to sync it) ===
+const CONFIG = {
+  targetLanguage: "German",
+  cefrLevel: "B2",
+  targetFlagEmoji: "🇦🇹",
+  baseFlagEmoji: "🇬🇧",
+  notePrefixConversation: "Deutsch B2 Konversation",
+  notePrefixQuiz: "Deutsch B2 Quiz",
+  notePrefixWritingListening: "Deutsch B2 Übersetzung & Hören"
+};
+
 // === SNAPSHOT DATA (regenerated each time you ask Claude to refresh the dashboard) ===
 // This is SAMPLE data so you can see the shape the dashboard expects.
 // Ask Claude to read your Apple Notes and replace SNAPSHOT_SESSIONS / SNAPSHOT_REVIEW_DATES
@@ -120,9 +131,9 @@ const SNAPSHOT_SESSIONS = [
       { "idiom": "am Puls der Zeit sein", "literal": "to be at the pulse of the time", "meaning": "to be up to date", "example": "Wer am Puls der Zeit sein will, muss sich ständig weiterbilden." }
     ],
     "mistakes": [
-      { "num": "1", "category": "Präposition", "wrong": "Ich denke an das Update seit gestern", "right": "Ich denke seit gestern an das Update", "explanation": "Zeitangabe steht meist vor dem Präpositionalobjekt." }
+      { "num": "1", "category": "Preposition", "wrong": "Ich denke an das Update seit gestern", "right": "Ich denke seit gestern an das Update", "explanation": "Zeitangabe steht meist vor dem Präpositionalobjekt." }
     ],
-    "stats": { "Anzahl Antworten": 9, "Wörter insgesamt": 240, "Durchschnittliche Wortzahl pro Antwort": 27, "Komplexe Sätze (Nebensätze)": 4, "dass-Sätze": 1, "weil-Sätze": 1, "wenn-Sätze": 1, "Konjunktiv II": 0, "Passiv": 1, "Genitiv": 0, "Eigene Fragen gestellt": 1, "Wiederverwendung alter Wörter": 2, "Wiederverwendung alter Redewendungen": 1, "Sitzungsdauer (Minuten)": 30 }
+    "stats": { "Responses": 9, "Total words": 240, "Average words per response": 27, "Complex sentences (subordinate clauses)": 4, "dass-Sätze": 1, "weil-Sätze": 1, "wenn-Sätze": 1, "Konjunktiv II": 0, "Passiv": 1, "Genitiv": 0, "Questions initiated": 1, "Reused old words": 2, "Reused old idioms": 1, "Session length (minutes)": 30 }
   },
   {
     "date": "2026-08-28",
@@ -142,19 +153,19 @@ const SNAPSHOT_SESSIONS = [
       { "idiom": "die Welt entdecken", "literal": "to discover the world", "meaning": "to travel and explore", "example": "Sie will die Welt entdecken, bevor sie mit dem Studium beginnt." }
     ],
     "mistakes": [
-      { "num": "1", "category": "Kasus", "wrong": "wegen der Regen", "right": "wegen des Regens", "explanation": "\"Wegen\" verlangt den Genitiv." },
-      { "num": "2", "category": "Wortstellung", "wrong": "Ich habe gestern, weil es geregnet hat, das Museum besucht", "right": "Ich habe gestern das Museum besucht, weil es geregnet hat", "explanation": "Nebensatz meist ans Ende, nicht mitten im Hauptsatz." }
+      { "num": "1", "category": "Case", "wrong": "wegen der Regen", "right": "wegen des Regens", "explanation": "\"Wegen\" verlangt den Genitiv." },
+      { "num": "2", "category": "Word Order", "wrong": "Ich habe gestern, weil es geregnet hat, das Museum besucht", "right": "Ich habe gestern das Museum besucht, weil es geregnet hat", "explanation": "Nebensatz meist ans Ende, nicht mitten im Hauptsatz." }
     ],
-    "stats": { "Anzahl Antworten": 12, "Wörter insgesamt": 310, "Durchschnittliche Wortzahl pro Antwort": 26, "Komplexe Sätze (Nebensätze)": 6, "dass-Sätze": 2, "weil-Sätze": 2, "wenn-Sätze": 1, "Konjunktiv II": 1, "Passiv": 0, "Genitiv": 1, "Eigene Fragen gestellt": 0, "Wiederverwendung alter Wörter": 1, "Wiederverwendung alter Redewendungen": 0, "Sitzungsdauer (Minuten)": 35 }
+    "stats": { "Responses": 12, "Total words": 310, "Average words per response": 26, "Complex sentences (subordinate clauses)": 6, "dass-Sätze": 2, "weil-Sätze": 2, "wenn-Sätze": 1, "Konjunktiv II": 1, "Passiv": 0, "Genitiv": 1, "Questions initiated": 0, "Reused old words": 1, "Reused old idioms": 0, "Session length (minutes)": 35 }
   }
 ];
 const SNAPSHOT_REVIEW_DATES = ["2026-08-22", "2026-08-28"];
 
 const CATEGORY_COLORS = {
-  'Artikel/Genus': '#6b9b7a', 'Kasus': '#c4885a', 'Wortstellung': '#7a8fb8',
-  'Verbform': '#d4a85a', 'Präposition': '#a87ba8', 'Wortwahl': '#5a9fa8',
-  'Vokabular': '#b85a7a', 'Rechtschreibung': '#8a8a5a', 'Komposition': '#a8a8a8',
-  'Sonstiges': '#bdbdbd', 'Unkategorisiert': '#cccccc'
+  'Article/Gender': '#6b9b7a', 'Case': '#c4885a', 'Word Order': '#7a8fb8',
+  'Verb Form': '#d4a85a', 'Preposition': '#a87ba8', 'Word Choice': '#5a9fa8',
+  'Vocabulary': '#b85a7a', 'Spelling': '#8a8a5a', 'Compounding': '#a8a8a8',
+  'Other': '#bdbdbd', 'Uncategorized': '#cccccc'
 };
 
 let lastDiag = '';
@@ -212,8 +223,8 @@ async function tryLiveLoad() {
     if (!n || !n.name) return;
     const k = n.id || n.name;
     if (seen.has(k)) return; seen.add(k);
-    if (n.name.startsWith('Deutsch B2 Konversation')) convNotes.push(n);
-    else if (n.name.startsWith('Deutsch B2 Review')) reviewNotes.push(n);
+    if (n.name.startsWith(CONFIG.notePrefixConversation)) convNotes.push(n);
+    else if (n.name.startsWith(CONFIG.notePrefixQuiz)) reviewNotes.push(n);
   });
   diagLines.push('Found ' + convNotes.length + ' conversation notes and ' + reviewNotes.length + ' review notes');
 
@@ -241,7 +252,7 @@ function parseNote(html, noteName) {
   const themeMatch = noteName.match(/\d{4}-\d{2}-\d{2},\s*(.+)$/);
   const session = {
     date: dateMatch ? dateMatch[1] : null,
-    theme: themeMatch ? themeMatch[1].trim() : 'Unbekannt',
+    theme: themeMatch ? themeMatch[1].trim() : 'Unknown',
     name: noteName,
     nouns: [], adjectives: [], verbs: [], idioms: [], mistakes: [], stats: {}
   };
@@ -254,19 +265,19 @@ function parseNote(html, noteName) {
     const header = Array.from(rows[0].querySelectorAll('td,th')).map(c => c.textContent.trim());
     const data = rows.slice(1).map(tr => Array.from(tr.querySelectorAll('td,th')).map(c => c.textContent.trim()));
     if (data.length === 0) return;
-    if (header.includes('Wort') && header.includes('Plural')) {
+    if (header.includes('Word') && header.includes('Plural')) {
       session.nouns.push(...data.map(r => ({ word: r[0]||'', plural: r[1]||'', meaning: r[2]||'', example: r[3]||'' })));
-    } else if (header[0] === 'Adjektiv') {
+    } else if (header[0] === 'Adjective') {
       session.adjectives.push(...data.map(r => ({ word: r[0]||'', meaning: r[1]||'', example: r[2]||'' })));
-    } else if (header[0] === 'Infinitiv') {
+    } else if (header[0] === 'Infinitive') {
       session.verbs.push(...data.map(r => ({ infinitive: r[0]||'', presens: r[1]||'', perfekt: r[2]||'', meaning: r[3]||'', example: r[4]||'' })));
-    } else if (header[0] === 'Redewendung') {
+    } else if (header[0] === 'Idiom') {
       session.idioms.push(...data.map(r => ({ idiom: r[0]||'', literal: r[1]||'', meaning: r[2]||'', example: r[3]||'' })));
-    } else if (header.includes('Kategorie') && header.includes('Falsch')) {
-      session.mistakes.push(...data.map(r => ({ num: r[0]||'', category: (r[1]||'Sonstiges').trim(), wrong: r[2]||'', right: r[3]||'', explanation: r[4]||'' })));
-    } else if (header[0] === '#' && header.includes('Falsch')) {
-      session.mistakes.push(...data.map(r => ({ num: r[0]||'', category: 'Unkategorisiert', wrong: r[1]||'', right: r[2]||'', explanation: r[3]||'' })));
-    } else if (header[0] === 'Metrik') {
+    } else if (header.includes('Category') && header.includes('Wrong')) {
+      session.mistakes.push(...data.map(r => ({ num: r[0]||'', category: (r[1]||'Other').trim(), wrong: r[2]||'', right: r[3]||'', explanation: r[4]||'' })));
+    } else if (header[0] === '#' && header.includes('Wrong')) {
+      session.mistakes.push(...data.map(r => ({ num: r[0]||'', category: 'Uncategorized', wrong: r[1]||'', right: r[2]||'', explanation: r[3]||'' })));
+    } else if (header[0] === 'Metric') {
       data.forEach(r => {
         const key = r[0]||''; const val = r[1]||'';
         const num = parseInt(String(val).replace(/[^\d\-]/g, ''), 10);
@@ -292,6 +303,8 @@ function setBanner(mode, diag) {
 }
 
 async function boot() {
+  document.title = `${CONFIG.targetLanguage} ${CONFIG.cefrLevel} Dashboard`;
+  document.getElementById('mainTitle').textContent = `${CONFIG.targetLanguage} ${CONFIG.cefrLevel} Dashboard`;
   document.getElementById('app').innerHTML = '<div class="card" style="text-align:center;color:#888;padding:40px">Trying live Apple Notes...</div>';
   setBanner('snapshot', 'Trying live load...');
   const live = await tryLiveLoad();
@@ -318,7 +331,7 @@ function render(sessions, reviewDates) {
     const seenCatsThisSession = new Set();
     s.mistakes.forEach(m => {
       totalMistakes++;
-      const cat = m.category || 'Sonstiges';
+      const cat = m.category || 'Other';
       mistakeByCat[cat] = (mistakeByCat[cat] || 0) + 1;
       if (!seenCatsThisSession.has(cat)) {
         seenCatsThisSession.add(cat);
@@ -331,14 +344,14 @@ function render(sessions, reviewDates) {
   sessions.forEach(s => { themeCount[s.theme] = (themeCount[s.theme] || 0) + 1; });
   const activitySet = new Set([...sessions.map(s => s.date), ...reviewDates].filter(Boolean));
   const streak = computeStreak(activitySet);
-  const b2 = { 'dass-Sätze': 0, 'weil-Sätze': 0, 'wenn-Sätze': 0, 'Konjunktiv II': 0, 'Passiv': 0, 'Genitiv': 0, 'Komplexe Sätze (Nebensätze)': 0 };
+  const b2 = { 'dass-Sätze': 0, 'weil-Sätze': 0, 'wenn-Sätze': 0, 'Konjunktiv II': 0, 'Passiv': 0, 'Genitiv': 0, 'Complex sentences (subordinate clauses)': 0 };
   let totalWords = 0, totalQ = 0, reuseW = 0, reuseI = 0;
   sessions.forEach(s => {
     Object.keys(b2).forEach(k => { const v = s.stats[k]; if (typeof v === 'number') b2[k] += v; });
-    if (typeof s.stats['Wörter insgesamt'] === 'number') totalWords += s.stats['Wörter insgesamt'];
-    if (typeof s.stats['Eigene Fragen gestellt'] === 'number') totalQ += s.stats['Eigene Fragen gestellt'];
-    if (typeof s.stats['Wiederverwendung alter Wörter'] === 'number') reuseW += s.stats['Wiederverwendung alter Wörter'];
-    if (typeof s.stats['Wiederverwendung alter Redewendungen'] === 'number') reuseI += s.stats['Wiederverwendung alter Redewendungen'];
+    if (typeof s.stats['Total words'] === 'number') totalWords += s.stats['Total words'];
+    if (typeof s.stats['Questions initiated'] === 'number') totalQ += s.stats['Questions initiated'];
+    if (typeof s.stats['Reused old words'] === 'number') reuseW += s.stats['Reused old words'];
+    if (typeof s.stats['Reused old idioms'] === 'number') reuseI += s.stats['Reused old idioms'];
   });
   const topCats = Object.entries(mistakeByCat).sort((a,b) => b[1] - a[1]);
   // Sticky categories: which Kategorie appears in the most distinct sessions?
@@ -356,7 +369,7 @@ function render(sessions, reviewDates) {
   stickyCats.forEach(sc => {
     for (const s of sessions) {
       for (const m of s.mistakes) {
-        if ((m.category || 'Sonstiges') === sc.category) {
+        if ((m.category || 'Other') === sc.category) {
           sc.exampleMistakes.push({ wrong: m.wrong, right: m.right, date: s.date });
           if (sc.exampleMistakes.length >= 2) break;
         }
@@ -409,7 +422,7 @@ function render(sessions, reviewDates) {
 
 <div class="row">
   <div>
-    <h2>B2 Structures Used</h2>
+    <h2>${escapeHtml(CONFIG.cefrLevel)} Structures Used</h2>
     <div class="card">
       <p class="section-intro">"Grown-up grammar" markers across all sessions.</p>
       <div class="chart-box"><canvas id="b2Chart"></canvas></div>
@@ -548,7 +561,7 @@ function render(sessions, reviewDates) {
 <h2>Session Log</h2>
 <div class="card">
   <table class="data">
-    <thead><tr><th>Date</th><th>Theme</th><th>Words</th><th>Verbs</th><th>Idioms</th><th>Mistakes</th><th>Total Wörter</th></tr></thead>
+    <thead><tr><th>Date</th><th>Theme</th><th>Words</th><th>Verbs</th><th>Idioms</th><th>Mistakes</th><th>Total Words</th></tr></thead>
     <tbody>
       ${sessions.slice().reverse().map(s => `<tr>
         <td>${s.date}</td><td>${escapeHtml(s.theme)}</td>
@@ -556,7 +569,7 @@ function render(sessions, reviewDates) {
         <td>${s.verbs.length}</td>
         <td>${s.idioms.length}</td>
         <td>${s.mistakes.length}</td>
-        <td>${s.stats['Wörter insgesamt'] ?? '—'}</td>
+        <td>${s.stats['Total words'] ?? '—'}</td>
       </tr>`).join('')}
     </tbody>
   </table>
@@ -564,7 +577,7 @@ function render(sessions, reviewDates) {
 `;
 
   renderHeatmap(sessions, reviewDates, streak);
-  renderB2Chart(b2);
+  renderStructuresChart(b2);
   renderMistakeChart(mistakeByCat);
   renderCumulativeChart(cumulative);
   setupVocabTabs(allNouns, allAdj, allVerbs, allIdioms, sessions);
@@ -760,9 +773,9 @@ function renderHeatmap(sessions, reviewDates, streak) {
     : 'No active streak. Your next scheduled session will start one.';
 }
 
-function renderB2Chart(totals) {
+function renderStructuresChart(totals) {
   const ctx = document.getElementById('b2Chart').getContext('2d');
-  const labels = Object.keys(totals).map(k => k.replace('-Sätze', '').replace('Komplexe Sätze (Nebensätze)', 'Nebensätze'));
+  const labels = Object.keys(totals).map(k => k.replace('-Sätze', '').replace('Complex sentences (subordinate clauses)', 'Subordinate clauses'));
   const data = Object.values(totals);
   new Chart(ctx, {
     type: 'bar',

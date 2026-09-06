@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "targetLanguage": "German",
+  "targetLanguageCode": "de",
+  "baseLanguage": "English",
+  "baseLanguageCode": "en",
+  "cefrLevel": "B2",
+  "targetFlagEmoji": "🇦🇹",
+  "baseFlagEmoji": "🇬🇧",
+  "notesFolderName": "Deutsch lernen B2 🇦🇹",
+  "notePrefixes": {
+    "conversation": "Deutsch B2 Konversation",
+    "quiz": "Deutsch B2 Quiz",
+    "writingListening": "Deutsch B2 Übersetzung & Hören"
+  },
+  "grammarStructures": [
+    "dass-Sätze",
+    "weil-Sätze",
+    "wenn-Sätze",
+    "Konjunktiv II",
+    "Passiv",
+    "Genitiv"
+  ],
+  "mistakeCategories": [
+    "Article/Gender",
+    "Case",
+    "Word Order",
+    "Verb Form",
+    "Preposition",
+    "Word Choice",
+    "Vocabulary",
+    "Spelling",
+    "Compounding",
+    "Other"
+  ],
+  "contentSources": [
+    {
+      "name": "Deutsche Welle Top-Thema mit Vokabeln",
+      "url": "https://www.dw.com/de/deutsch-lernen/top-thema/s-8031",
+      "levelTag": "B1-B2",
+      "hasTranscript": true
+    },
+    {
+      "name": "Deutsche Welle Video-Thema",
+      "url": "https://www.dw.com/de/deutsch-lernen/video-thema/s-13502",
+      "levelTag": "B2",
+      "hasTranscript": true
+    },
+    {
+      "name": "Deutsche Welle Langsam gesprochene Nachrichten",
+      "url": "https://www.dw.com/de/deutsch-lernen/nachrichten/s-8030",
+      "levelTag": "B1-B2",
+      "hasTranscript": true
+    },
+    {
+      "name": "Easy German YouTube",
+      "url": "https://www.youtube.com/@EasyGerman/videos",
+      "levelTag": "B1-B2",
+      "hasTranscript": false
+    },
+    {
+      "name": "Slow German with Annik Rubens",
+      "url": "https://slowgerman.com/",
+      "levelTag": "B1-B2",
+      "hasTranscript": true
+    },
+    {
+      "name": "Nachrichtenleicht (Deutschlandfunk)",
+      "url": "https://www.nachrichtenleicht.de/",
+      "levelTag": "A2-B1",
+      "hasTranscript": true
+    },
+    {
+      "name": "DW Jojo sucht das Glück",
+      "url": "https://learngerman.dw.com/en/jojo/c-46664301",
+      "levelTag": "B1-B2",
+      "hasTranscript": true
+    }
+  ],
+  "contentSourceSearchInstruction": "If contentSources is empty, or none match the learner's current CEFR level, use WebSearch to find 2-3 reputable, age-appropriate audio/video sources with transcripts for the target language at the configured CEFR level before each Sunday session.",
+  "createdAt": "2026-09-04",
+  "updatedAt": "2026-09-04"
+}
